@@ -4,9 +4,9 @@ import json
 import os
 
 if not os.path.isfile('errors.json'):
-       f = open('errors.json', "w")
-       f.write({"count": 0})
-       f.close()
+        f = open('errors.json', "w")
+        f.write("""{"count": 0}""")
+        f.close()
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -19,7 +19,6 @@ def get_errors():
         errores = data.get('count')
 
 get_errors()
-print(errores)
 
 @client.event
 async def on_ready():
@@ -43,13 +42,11 @@ async def on_message(message):
     }
     response = requests.post(url, data=data, headers=headers)
     errors = json.loads(response.text)['matches']
-    print(response)
     correct = ''
     try:
         correct = json.loads(response.text)['matches'][0]['replacements'][0]['value'] if len(json.loads(response.text)['matches']) > 0 else 'No hay errores ortográficos'
     except IndexError:
         pass
-    print(errors)
     if len(errors) > 0:
         try:
             await message.add_reaction('❌')
