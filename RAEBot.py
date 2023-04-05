@@ -55,7 +55,10 @@ async def on_message(message):
         if correct == '':
             pass
         else:
-            await message.channel.send(f"{correct}*")
+            try:
+                await message.channel.send(f"{correct}*")
+            except discord.errors.Forbidden:
+                pass
         get_errors()
         await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f'{errores} errores ortográficos'))
         with open('errors.json', 'r') as f:
